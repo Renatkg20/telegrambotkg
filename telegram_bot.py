@@ -24,7 +24,7 @@ def get_url():
   total1 = [value.strip() for value in total]
   return f"Bishkek Petrolium\n\n{total1[0]}\n\n{total1[1]} | {total1[2]}\n\n{total1[3]} | {total1[4]}\n\n{total1[5]} | {total1[6]}\n\n {total1[7]} | {total1[8]}\n\n{total1[9]} | {total1[10]} "
 
-res = get_url()
+#res = get_url()
 
 def get_url_rosneft():
   url = "http://www.knp.kg/"
@@ -38,7 +38,7 @@ def get_url_rosneft():
 
   return f"РосНефть Кыргызстан, Розничная стоимость ГСМ\n\nДата: {total[1]}\n\nВид  | Стоимость (сом.л) \n\nАИ92 | {total[4]}\n\nАИ95 | {total[5]}\n\n  ДТ | {total[6]}"
 
-res_ros = get_url_rosneft()
+#res_ros = get_url_rosneft()
 
 def isOpen(ip,port):
    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -50,7 +50,7 @@ def isOpen(ip,port):
        return f"Port {port} is close"
 
 
-port1 = isOpen("92.62.72.167", "10012")
+#port1 = isOpen("92.62.72.167", "10012")
 
 def aki():
   resp = requests.get("http://www.akipress.kg")
@@ -61,7 +61,7 @@ def aki():
   resl1 = soup.find('div', attrs = {'class': "nowr_all_cnt"})
   return f"{resl2.text} {resl1.text} \n {resl.text.strip()}"
 
-akipress = aki()
+#akipress = aki()
 
 def get_url_oc():
   url = "https://oc.kg/"
@@ -74,7 +74,7 @@ def get_url_oc():
 
   return res1
 
-ockg = get_url_oc()
+#ockg = get_url_oc()
 
 def shutdown(shut_comand):
 	pass
@@ -92,12 +92,15 @@ def reboot1(reboot_comand):
 	    return os.system("shutdown -c")
 
 def temp_cpu():
-	return os.system("sensors > temp_cpu.txt")
+  os.system("sensors > temp_cpu.txt")
+  with open("temp_cpu.txt") as file:
+      data = file.read()
+  return data
 
-t = temp_cpu()
+#t = temp_cpu()
 
-with open("temp_cpu.txt") as file:
-	data = file.read()
+#with open("temp_cpu.txt") as file:
+	#data = file.read()
 
 
 @dp.message_handler(commands=['start'])
@@ -106,23 +109,23 @@ async def process_start_command(message: types.Message):
 
 @dp.message_handler(commands=['1'])
 async def process_help_command(message: types.Message):
-    await message.reply(res)
+    await message.reply(get_url())
 
 @dp.message_handler(commands=['2'])
 async def process_help_command(message: types.Message):
-    await message.reply((res_ros))
+    await message.reply(get_url_rosneft())
 
 @dp.message_handler(commands=['3'])
 async def process_help_command(message: types.Message):
-    await message.reply((ockg))
+    await message.reply(get_url_oc())
 
 @dp.message_handler(commands=['5'])
 async def process_help_command(message: types.Message):
-    await message.reply((port1))
+    await message.reply((isOpen("92.62.72.167", "10012")))
 
 @dp.message_handler(commands=['6'])
 async def process_help_command(message: types.Message):
-    await message.reply((akipress))
+    await message.reply(aki())
 
 @dp.message_handler(commands=['9'])
 async def process_help_command(message: types.Message):
@@ -139,7 +142,7 @@ async def process_help_command(message: types.Message):
 
 @dp.message_handler(text=['CPU'])
 async def text_in_handler(message: types.Message):
-    await message.answer(data)
+    await message.answer(temp_cpu())
 
 @dp.message_handler()
 async def echo_message(msg: types.Message):
